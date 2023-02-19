@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigationView() {
 
+        //set up Navigation Host inside the Main Activity so that it can follow single Activity Design Pattern
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 

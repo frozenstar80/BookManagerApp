@@ -9,7 +9,7 @@ import com.example.bookmanagerapp.model.BooksInfo
     version = 1, exportSchema = false
 )
 abstract class ToDoDatabase : RoomDatabase() {
-
+//Extend Room Database
     abstract fun booksDao(): BooksDao
 
 }

@@ -11,8 +11,7 @@ constructor(private val booksDao: BooksDao) {
 
     suspend fun insertBook(booksInfo: BooksInfo) = booksDao.insertBook(booksInfo)
     suspend fun deleteBook(booksInfo: BooksInfo) = booksDao.deleteBook(booksInfo)
-    suspend fun updateBook(booksInfo: BooksInfo) =
-        booksDao.update(booksInfo)
+    suspend fun updateBook(booksInfo: BooksInfo) = booksDao.update(booksInfo)
     fun getAllBooks() = booksDao.getAllBooks()
 
 }

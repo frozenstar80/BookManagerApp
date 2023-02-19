@@ -19,16 +19,19 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BooksListFragment : Fragment(R.layout.fragment_books_list) , DeleteBook{
+    // implement DeleteBook Interface for deleting the book from database on Delete Button Pressed
 
     private var _binding: FragmentBooksListBinding? = null
     private val binding get() = _binding!!
     private lateinit var booksAdapter: BooksAdapter
     private val viewModel: BooksViewModel by viewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //Layout inflation
         _binding = FragmentBooksListBinding.inflate(
             inflater,
             container,
@@ -40,6 +43,7 @@ class BooksListFragment : Fragment(R.layout.fragment_books_list) , DeleteBook{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //call setUpRecyclerView to set the recycler view on view created
         setupRecyclerView()
 
         binding.fabAddTask.setOnClickListener {
@@ -58,6 +62,7 @@ class BooksListFragment : Fragment(R.layout.fragment_books_list) , DeleteBook{
             adapter = booksAdapter
         }
 
+        // observe livedata changes to update the recycler view list
         viewModel.allBooks.observe(requireActivity()) { listTodo ->
             updateUi(listTodo)
             booksAdapter.bookList = listTodo
@@ -65,6 +70,7 @@ class BooksListFragment : Fragment(R.layout.fragment_books_list) , DeleteBook{
     }
 
     private fun updateUi(list: List<BooksInfo>) {
+        //if there no record then cardView is shown
         if (list.isNotEmpty()) {
             binding.rvTodoList.visibility = View.VISIBLE
             binding.cardView.visibility = View.GONE
@@ -75,6 +81,7 @@ class BooksListFragment : Fragment(R.layout.fragment_books_list) , DeleteBook{
     }
 
     override fun onDelete(booksInfo: BooksInfo) {
+        //Delete the record from ROOM
         viewModel.deleteBook(booksInfo)
         Toast.makeText(requireActivity(),"Info Deleted",Toast.LENGTH_SHORT).show()
     }

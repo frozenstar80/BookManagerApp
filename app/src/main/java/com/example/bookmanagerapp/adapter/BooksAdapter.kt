@@ -24,6 +24,7 @@ class BooksAdapter(private val deleteBook: DeleteBook,val activity: Activity) : 
     inner class ToDoViewHolder(val binding: ItemBooksLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+    //Used Diff Util to notify the Recycler View change in data on delete or on update
     private val differCallback = object : DiffUtil.ItemCallback<BooksInfo>() {
 
         override fun areItemsTheSame(oldItem: BooksInfo, newItem: BooksInfo): Boolean {
@@ -43,6 +44,7 @@ class BooksAdapter(private val deleteBook: DeleteBook,val activity: Activity) : 
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
+        //inflate the layout
         return ToDoViewHolder(
             ItemBooksLayoutBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -55,12 +57,15 @@ class BooksAdapter(private val deleteBook: DeleteBook,val activity: Activity) : 
         val bookInfo = bookList[position]
 
         holder.binding.apply {
+            //set up bookName , Number , User Name inside  the cardView
             userName.text = bookInfo.Name
             userNumber.text = bookInfo.Number
             bookName.text = bookInfo.BookName
+            // pressing delete button calls the onDelete Function of interface.
             delete.setOnClickListener {
                 deleteBook.onDelete(bookInfo)
             }
+                // on pressing cardView goTo Add Book Screen and pass the information inside the bundle
             this.root.setOnClickListener {
                 Navigation.findNavController(activity, R.id.nav_host_fragment)
                     .navigate(R.id.action_booksListFragment_to_booksFragment, bundleOf(NAME to bookInfo.Name,
@@ -76,6 +81,7 @@ class BooksAdapter(private val deleteBook: DeleteBook,val activity: Activity) : 
 
     }
 
+    //return size of the list
     override fun getItemCount() = bookList.size
 
 

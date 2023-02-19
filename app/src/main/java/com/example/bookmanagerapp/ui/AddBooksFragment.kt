@@ -23,11 +23,13 @@ class AddBooksFragment : Fragment(R.layout.fragment_add_book) {
 
     private var _binding: FragmentAddBookBinding? = null
     private val binding get() = _binding!!
+    //List of items inside dropdown menu
     private var bookName = arrayOf<String?>(
         "Book A",
         "Book B",
         "Book C"
     )
+    //set up ViewModel using viewModels()
     private val viewModel: BooksViewModel by viewModels()
 
     override fun onCreateView(
@@ -41,18 +43,22 @@ class AddBooksFragment : Fragment(R.layout.fragment_add_book) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Retrieve Information sent in Bundle on Pressing on the Card
         val name = arguments?.getString(Constants.NAME)
         val number = arguments?.getString(Constants.NUMBER)
         val selectedBookName = arguments?.getString(Constants.BOOKNAME)
         val id = arguments?.getInt(Constants.ID)
 
 
+        //initializing ArrayAdapter with layout and array of String items
         val arrayAdapter: ArrayAdapter<*> =
             ArrayAdapter<Any?>(requireContext(), R.layout.my_selected_item, bookName)
         arrayAdapter.setDropDownViewResource(R.layout.my_selected_item)
         binding.selectBooks.adapter = arrayAdapter
 
         binding.btnAddTask.setOnClickListener { mView ->
+            //check if id is null . If Yes then create fresh record and insert in side database
+            //else update old record
             if (id == null)
                 saveNote(mView)
             else
@@ -60,6 +66,7 @@ class AddBooksFragment : Fragment(R.layout.fragment_add_book) {
         }
 
 
+        // check for book Position inside the array and then set the spinner selection to particular item
         if (!name.isNullOrEmpty()){
             binding.etName.setText(name)
             binding.etNumber.setText(number)
@@ -98,9 +105,11 @@ class AddBooksFragment : Fragment(R.layout.fragment_add_book) {
         val userNumber = binding.etNumber.text.toString()
         val bookName = binding.selectBooks.selectedItem.toString()
 
+        //Check if UserName or Number is Empty or not. If its empty then show snackBar message
         if (userName.isNotEmpty() && userNumber.isNotEmpty()) {
             val bookInfo = BooksInfo(0, userName,userNumber,bookName)
 
+            //Pass bookInfo Object to insert the data
             viewModel.insertBook(bookInfo)
 
             Snackbar.make(view, "Info Saved Successfully",
